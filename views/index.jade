@@ -1,0 +1,39 @@
+extends layout
+
+block content
+
+  div(id="serverFps")
+
+  div(ng-controller="Abuse")
+    
+
+    div(id="stage" oncontextmenu="return false")
+      div(id="container")
+
+    div(id="weapons")
+      div(ng-repeat="weapon in weapons")
+        div(ng-class="{weapon : true, {{weapon.name}} : true}")
+          div.title {{weapon.name}}
+          div.ammon(ng-show="weapon.ammo >= 0") {{weapon.ammo}}
+    
+
+    div(id="server")
+      table.table
+        caption {{status.server}} v{{status.version}}
+        thead
+          tr
+            th User
+            th Kills
+            th Deaths
+            th HP
+
+          tbody
+          tr(ng-repeat="user in status.users")
+            td {{user.name}}
+            td
+              b  {{user.score.kill}}
+            td {{user.score.death}}
+            th {{user.hp}}
+
+    div(id="debug")
+      div(id="debugArea")

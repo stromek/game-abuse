@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-">
+    <title>test</title>
+    <script src="js/kinetic-v4.5.5.min.js"></script>
+    <script type="text/javascript">
+      function collisionConvexPolygon ( vertsax, vertsay, vertsbx, vertsby ) {
+          var alen = vertsax.length;
+          var blen = vertsbx.length;
+          // Loop for axes in Shape A
+          for ( var i = 0, j = alen - 1; i < alen; j = i++ ) {
+              // Get the axis
+              var vx =    vertsay[ i ] - vertsay[ j ];
+              var vy = -( vertsax[ i ] - vertsax[ j ] );
+      
+              
+              var len = Math.sqrt( vx * vx + vy * vy );
+      
+              vx /= len;
+              vy /= len;
+      
+              // Project shape A
+              var max0 = vertsax[ 0 ] * vx + vertsay[ 0 ] * vy, min0 = max0;
+              for ( k = 1; k < alen; k++ ) {
+                  var proja = vertsax[ k ] * vx + vertsay[ k ] * vy;
+      
+                  if ( proja > max0 ) {
+                      max0 = proja;
+                  }
+                  else if ( proja < min0 ) {
+                      min0 = proja;
+                  }
+              }
+              // Project shape B
+              var max1 = vertsbx[ 0 ] * vx + vertsby[ 0 ] * vy, min1 = max1;
+              for ( var k = 1; k < blen; k++ ) {
+                  var projb = vertsbx[ k ] * vx + vertsby[ k ] * vy;
+      
+                  if ( projb > max1 ) {
+                      max1 = projb;
+                  }
+                  else if ( projb < min1 ) {
+                      min1 = projb;
+                  }
+              }
+              // Test for gaps
+              if ( !axisOverlap( min0, max0, min1, max1 ) ) {
+                  return false;
+              }
+          }
+          // Loop for axes in Shape B (same as above)
+          for ( var i = 0, j = blen - 1; i < blen; j = i++ ) {
+              var vx =    vertsby[ i ] - vertsby[ j ];
+              var vy = -( vertsbx[ i ] - vertsbx[ j ] );
+              var len = Math.sqrt( vx * vx + vy * vy );
+      
+              vx /= len;
+              vy /= len;
+      
+              var max0 = vertsax[ 0 ] * vx + vertsay[ 0 ] * vy, min0 = max0;
+              for ( k = 1; k < alen; k++ ) {
+                  var proja = vertsax[ k ] * vx + vertsay[ k ] * vy;
+      
+                  if ( proja > max0 ) {
+                      max0 = proja;
+                  }
+                  else if ( proja < min0 ) {
+                      min0 = proja;
+                  }
+              }
+              var max1 = vertsbx[ 0 ] * vx + vertsby[ 0 ] * vy, min1 = max1;
+              for ( var k = 1; k < blen; k++ ) {
+                  var projb = vertsbx[ k ] * vx + vertsby[ k ] * vy;
+      
+                  if ( projb > max1 ) {
+                      max1 = projb;
+                  }
+                  else if ( projb < min1 ) {
+                      min1 = projb;
+                  }
+              }
+              if ( !axisOverlap( min0, max0, min1, max1 ) ) {
+                  return false;
+              }
+          }
+          return true;
+      }
+      
+      function axisOverlap ( a0, a1, b0, b1 ) {
+          return !( a0 > b1 || b0 > a1 );
+      }
+      
+      window.onload = function() {
+        var items = []
+        
+        /*
+        vertsax = [ 200, 220, 220, 200 ]
+        vertsay = [ 220, 220, 200, 200 ]
+        vertsbx = [ -10,   0,  10, 10, -10 ]
+        vertsby = [ -10, -50, -10, 10,  10 ]
+        */
+
+        items.push([[ 200, 240, 240, 200 ], [ 240, 240, 200, 200 ], [0, 0]])
+        items.push([[ 200, 240, 240, 200 ], [ 240, 240, 200, 200 ], [30, 60]])
+        
+        var stage = new Kinetic.Stage({
+          container: 'container',
+          width: 800,
+          height: 600
+        });
+        
+        var layer = new Kinetic.Layer();
+        
+        for(var i=0,l=items.length;i<l;i++) {
+          var points = []
+          
+          for(var j=0,k=items[i][0].length;j<k;j++) {
+            points.push(items[i][0][j] + items[i][2][0])
+            points.push(items[i][1][j] + items[i][2][1])
+            //points.push(items[i][0][j])
+            //points.push(items[i][1][j])
+          }  
+          
+          //points = [0,0, 100, 0, 100, 100, 0, 100]
+          var poly = new Kinetic.Polygon({
+            points: points,
+            fill: '#00D2FF',
+          });
+        
+          // add the shape to the layer
+          layer.add(poly); 
+        }
+        
+        // add the layer to the stage
+        stage.add(layer);
+        
+        
+        //alert(collisionConvexPolygon(vertsax, vertsay, vertsbx, vertsby))
+        console.log("Ready");
+        alert(collisionConvexPolygon(items[0][0], items[0][1], items[1][0], items[1][1]))
+      }
+    </script>
+  </head>
+  <body>
+  
+    <div id="container" style="border:1px solid black">
+  </div>
+
+  </body>
+</html>

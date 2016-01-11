@@ -1,0 +1,1 @@
+nodemon -e coffee -w server --debug run.js

@@ -1,0 +1,27 @@
+doctype html
+html(ng-app="Abuse")
+  head
+    meta(charset='utf-8')
+    title= title
+    link(rel='stylesheet', href='/css/style.css')
+    script(src='http://192.168.135.50:35729/livereload.js')
+
+    link(rel="stylesheet", href="/css/bootstrap.min.css"     , type="text/css")
+    link(rel="stylesheet", href="/css/font-awesome.min.css"  , type="text/css")
+    
+    script(src="http://192.168.135.50:35729/livereload.js")
+
+    script(src="/js/lib/kinetic-v4.5.5.min.js")
+    script(src="/js/lib/underscore-min.js")
+    script(src="/js/lib/jquery-2.0.3.min.js")
+    script(src="/js/lib/modernizr.custom.js")
+    script(src="/js/lib/angular.min.js")
+    script(src="/socket.io/socket.io.js")
+
+
+    script(src="/js/client.coffee.js")
+
+  body
+    block content
+
+    script(src="js/lib/bootstrap.min.js")
